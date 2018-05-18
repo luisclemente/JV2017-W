@@ -314,5 +314,17 @@ public class UsuariosDAO  implements OperacionesDAO {
 	public void cerrar() {
 		// Nada que hacer si no hay persistencia.	
 	}
+	
+	/**
+	 * Obtiene el mapa de equivalencias de id para idUsr.
+	 * @return el Hashtable almacenado
+	 */
+	private Map<String,String> obtenerMapaEquivalencias(){
+		//Obtiene mapa de equivalencias
+		Query consulta = db.query();
+		consulta.constrain(Hashtable.class);
+		ObjectSet <Hashtable <String,String>> result = consulta.execute();
+		return result.get(0);
+	}
 
 } //class
