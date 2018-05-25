@@ -202,10 +202,7 @@ public class UsuariosDAO  implements OperacionesDAO {
 		  }
 		
 		}
-		
-		
 	
-
 	/**
 	 *  Si hay coincidencia de identificador hace 23 intentos de variar la última letra
 	 *  procedente del NIF. Llama al generarVarianteIdUsr() de la clase Usuario.
@@ -244,10 +241,13 @@ public class UsuariosDAO  implements OperacionesDAO {
 	 *	@param usr - Usuario a registrar equivalencias. 
 	 */
 	private void registrarEquivalenciaId(Usuario usr) {
-		assert usr != null;
-		equivalenciasId.put(usr.getIdUsr(), usr.getIdUsr());
-		equivalenciasId.put(usr.getNif().getTexto(), usr.getIdUsr());
-		equivalenciasId.put(usr.getCorreo().getTexto(), usr.getIdUsr());
+		Map<String,String> mapaEquivalencias = obtenerMapaEquivalencias();
+		
+		mapaEquivalencias.put(usr.getIdUsr(), usr.getIdUsr());
+		mapaEquivalencias.put(usr.getNif().getTexto(), usr.getIdUsr());
+		mapaEquivalencias.put(usr.getCorreo().getTexto(), usr.getIdUsr());
+		
+		db.store(mapaEquivalencias);
 	}
 
 	/**
@@ -354,5 +354,7 @@ public class UsuariosDAO  implements OperacionesDAO {
 		ObjectSet <Hashtable <String,String>> result = consulta.execute();
 		return result.get(0);
 	}
+	
+	
 
 } //class
