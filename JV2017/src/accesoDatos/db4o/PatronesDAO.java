@@ -144,15 +144,16 @@ public class PatronesDAO implements OperacionesDAO {
 	@Override
 	public void alta(Object obj) throws DatosException  {
 		assert obj != null;
-		Patron patronNuevo = (Patron) obj;										// Para conversión cast
-		int posicionInsercion = obtenerPosicion(patronNuevo.getNombre()); 
-		if (posicionInsercion < 0) {
-			datosPatrones.add(-posicionInsercion - 1, patronNuevo); 			// Inserta la sesión en orden.
+		Patron patron = (Patron) obj;										
+		try {
+			obtener(patron.getNombre());
 		}
-		else {
-			throw new DatosException("Alta: "+ patronNuevo.getNombre() + " ya existe");
+		catch (DatosException e) {
+			db.store(patron);
+			return;
 		}
-	}
+			throw new DatosException("Alta: "+ patron.getNombre() + " ya existe");
+		}
 
 	/**
 	 * Elimina el objeto, dado el id utilizado para el almacenamiento.
@@ -220,7 +221,7 @@ public class PatronesDAO implements OperacionesDAO {
 	 */
 	@Override
 	public void cerrar() {
-		// Nada que hacer si no hay persistencia.	
+		db.close();	
 	}
 	
 } //class
