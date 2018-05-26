@@ -4,14 +4,18 @@
  * Colabora en el patron Fachada.
  * @since: prototipo2.0
  * @source: MundosDAO.java 
- * @version: 2.0 - 2018/04/20
- * @author: ajp
+ * @version: 2.1 - 2018/05/26
+ * @author: Grupo 3
  */
 
 package accesoDatos.db4o;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
+import com.db4o.query.Query;
 
 import accesoDatos.DatosException;
 import accesoDatos.OperacionesDAO;
@@ -20,6 +24,10 @@ import modelo.Patron;
 import modelo.Posicion;
 
 public class MundosDAO implements OperacionesDAO {
+	
+	//Elemento de almacenamiento
+	//Base datos db4o
+	private ObjectContainer db;
 	
 	// Requerido por el patrón Singleton
 	private static MundosDAO instancia;
@@ -221,4 +229,23 @@ public class MundosDAO implements OperacionesDAO {
 		// Nada que hacer si no hay persistencia.	
 	}
 	
+	/**
+	 *  Obtiene un objeto mundo dado su nombre
+	 *	@param ID - nombre de Mundo a buscar.
+	 *	@return - Devuelve el objeto encontrado o null si no lo encuentra HECHO
+	 */
+
+	public Mundo obtenerMundo(String nombre) throws DatosException{
+
+		Query consulta = db.query();
+		consulta.constrain(Mundo.class);
+		consulta.descend("nombre").constrain(nombre).equal();
+		ObjectSet<Mundo> result = consulta.execute();
+		if (result.size()>0){
+			return result.get(0);
+		}
+		else{
+			throw new DatosException("Obtener: " + nombre + "no existe");
+		}
+	}
 } // class
