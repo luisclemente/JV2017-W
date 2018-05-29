@@ -12,6 +12,7 @@ package accesoDatos.db4o;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -139,6 +140,16 @@ public class MundosDAO implements OperacionesDAO {
 	@Override
 	public Mundo obtener(Object obj) throws DatosException  {
 		return this.obtener(((Mundo) obj).getNombre());
+	}
+	
+	/**
+	 * Obtiene todos los objetos Mundo almacenados
+	 * @return -la List con todos los mundos.
+	 */ 
+	public List<Mundo> obtenerTodos(){
+		Query consulta = db.query();
+		consulta.constrain(Mundo.class);
+		return consulta.execute();
 	}
 	
 	/**
