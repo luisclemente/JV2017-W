@@ -60,6 +60,7 @@ public class PatronesDAO implements OperacionesDAO {
 		return instancia;
 	}
 
+
 	/**
 	 *  Método para generar datos predeterminados.
 	 */
@@ -71,8 +72,12 @@ public class PatronesDAO implements OperacionesDAO {
 			{ 0, 1, 1, 1 }, 
 			{ 0, 0, 0, 0 }
 		};
-		Patron patronDemo = new Patron("PatronDemo", esquemaDemo);
-		datosPatrones.add(patronDemo);
+		Patron patronDemo = new Patron("Demo0", esquemaDemo);
+		try {
+			alta(patronDemo);
+		} catch (DatosException e) {
+			e.printStackTrace();
+		}
 	}
 
 	//OPERACIONES DAO
